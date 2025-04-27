@@ -21,6 +21,15 @@ public class Main {
 
         System.out.println("\n==================== INICIANDO BUSCAS ====================\n");
 
+        // ------------------ CHAMANDO A BUSCA SEQUENCIAL ------------------
+        long inicioBuscaSequencial = System.nanoTime();
+
+        BuscaSequencial buscaSequencial = new BuscaSequencial();
+        buscaSequencial.runSearch(nome);  // Chamando o método de busca sequencial
+
+        double tempoBuscaSequencial = (System.nanoTime() - inicioBuscaSequencial) / 1_000_000_000.0;
+        System.out.printf("Tempo de execução: %.4fs%n%n", tempoBuscaSequencial);
+
         // ------------------ FUTURE TASK (Thread manual) ------------------
         long inicioThreads = System.nanoTime();
 
@@ -101,6 +110,15 @@ public class Main {
             System.out.printf("[EXECUTOR] O nome %s foi encontrado no diretorio %s, arquivo %s, linha %d em %.4fS.\n",
                     nome, resultExecutor.getDirectory(), resultExecutor.getFile(), resultExecutor.getLine(), tempoExecutor);
         }
+
+        // ------------------ CÁLCULO DE SPEEDUP ------------------
+        double speedupThreads = tempoBuscaSequencial / tempoThreads;
+        double speedupForkJoin = tempoBuscaSequencial / tempoForkJoin;
+        double speedupExecutor = tempoBuscaSequencial / tempoExecutor;
+
+        System.out.printf("Speedup com Threads: %.4fs%n", speedupThreads);
+        System.out.printf("Speedup com ForkJoin: %.4fs%n", speedupForkJoin);
+        System.out.printf("Speedup com ExecutorService: %.4fs%n", speedupExecutor);
 
         System.out.println("\n==================== BUSCAS FINALIZADAS ====================\n");
     }
