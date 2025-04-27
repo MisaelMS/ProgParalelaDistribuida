@@ -2,12 +2,14 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Scanner;
 
 public class BuscaSequencial {
 
     public static void main(String[] args) {
-        String nome = "Penny Black";// "Angel Miller";
-
+        System.out.println("Digite o nome a ser procurado\n");
+        Scanner sc = new Scanner(System.in);
+        String nome = sc.nextLine();
         long inicio = System.nanoTime();
 
         if (repositorio("./ArquivosTexto/dataset_p", nome)) {
@@ -37,21 +39,21 @@ public class BuscaSequencial {
         }
 
         for (File arquivo : arquivos) {
-            if (buscarNome(arquivo, nome))
+            if (buscarNome(arquivo, diretorio, nome))
                 return true;
         }
         return false;
     }
 
-    private static boolean buscarNome(File arquivo, String nome) {
+    private static boolean buscarNome(File arquivo, String diretorio, String nome) {
         try (BufferedReader reader = new BufferedReader(new FileReader(arquivo))) {
             String linha;
             int i = 1;
 
             while ((linha = reader.readLine()) != null) {
                 if (linha.contains(nome)) {
-                    System.out.printf("Encontrado no arquivo '%s' - Linha %d: %s%n",
-                            arquivo.getName(), i, linha);
+                    System.out.printf("Encontrado no diretorio '%s', arquivo '%s' e - Linha %d: %s%n",
+                            diretorio, arquivo.getName(), i, linha);
                     return true;
                 }
                 i++;
